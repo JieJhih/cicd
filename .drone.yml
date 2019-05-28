@@ -11,9 +11,7 @@ clone:
 pipeline:
   commit-status-pend:
     image: jmccann/drone-github-status:rc
-    secrets:
-      - source: token
-        target: api_key
+    secrets: [ api_token ]
     state: pending
     context: drone
 
@@ -24,9 +22,7 @@ pipeline:
 
   commit-status-failed:
     image: jmccann/drone-github-status:rc
-    secrets:
-      - source: token
-        target: api_key
+    secrets: [ api_token ]
     state: failure
     context: drone
     when:
@@ -34,9 +30,7 @@ pipeline:
 
   commit-status-succeed:
     image: jmccann/drone-github-status:rc
-    secrets:
-      - source: token
-        target: api_key
+    secrets: [ api_token ]
     state: success
     context: drone
     when:
