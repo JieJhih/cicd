@@ -10,7 +10,7 @@ clone:
 
 pipeline:
   commit-status-pend:
-    image: jmccann/drone-github-status
+    image: jmccann/drone-github-status:rc
     secrets:
       - source: token
         target: api_key
@@ -23,7 +23,7 @@ pipeline:
       - go test
 
   commit-status-failed:
-    image: jmccann/drone-github-status
+    image: jmccann/drone-github-status:rc
     secrets:
       - source: token
         target: api_key
@@ -33,7 +33,7 @@ pipeline:
       status: [ failure ]
 
   commit-status-succeed:
-    image: jmccann/drone-github-status
+    image: jmccann/drone-github-status:rc
     secrets:
       - source: token
         target: api_key
