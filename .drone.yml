@@ -26,7 +26,7 @@ pipeline:
     state: failure
     context: drone
     when:
-      status: [ success, changed, failure ]
+      status: [ failure ]
 
   commit-status-succeed:
     image: gboo/github-status
