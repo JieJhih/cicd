@@ -12,4 +12,4 @@ pipeline:
   test:
     image: golang
     commands:
-      - go test
+      - env
