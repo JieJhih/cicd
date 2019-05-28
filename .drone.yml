@@ -1,15 +1,7 @@
 workspace:
   base: /go
   path: src/graduate-project
-
-clone:
-  git:
-    image: plugins/git
-    depth: 1
-    tags: false
-    when:
-      event: pull_request
-
+  
 pipeline:
   test:
     image: golang
