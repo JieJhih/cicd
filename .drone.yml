@@ -9,35 +9,7 @@ clone:
     tags: false
 
 pipeline:
-  commit-status-pend:
-    image: jmccann/drone-github-status:rc
-    secrets:
-      - source: token
-        target: api_key
-    state: pending
-    context: drone
-
   test:
     image: golang
     commands:
       - go test
-
-  commit-status-failed:
-    image: jmccann/drone-github-status:rc
-    secrets:
-      - source: token
-        target: api_key
-    state: failure
-    context: drone
-    when:
-      status: [ failure ]
-
-  commit-status-succeed:
-    image: jmccann/drone-github-status:rc
-    secrets:
-      - source: token
-        target: api_key
-    state: success
-    context: drone
-    when:
-      status: [ success ]
