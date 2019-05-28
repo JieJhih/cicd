@@ -10,8 +10,10 @@ clone:
 
 pipeline:
   commit-status-pend:
-    image: gboo/github-status
-    secrets: [ token ]
+    image: jmccann/drone-github-status
+    secrets:
+      - source: token
+        target: api_key
     state: pending
     context: drone
 
@@ -21,16 +23,20 @@ pipeline:
       - go test
 
   commit-status-failed:
-    image: gboo/github-status
-    secrets: [ token ]
+    image: jmccann/drone-github-status
+    secrets:
+      - source: token
+        target: api_key
     state: failure
     context: drone
     when:
       status: [ failure ]
 
   commit-status-succeed:
-    image: gboo/github-status
-    secrets: [ token ]
+    image: jmccann/drone-github-status
+    secrets:
+      - source: token
+        target: api_key
     state: success
     context: drone
     when:
