@@ -9,19 +9,22 @@ clone:
     tags: false
 
 pipeline:
-  commit-status-pend:
-    image: cloudposse/github-status-updater
-    environment:
-      GITHUB_ACTION: update_state
-      GITHUB_TOKEN:
-        from_secret: token
-      GITHUB_OWNER: JieJhih
-      GITHUB_REPO: cicd
-      GITHUB_REF: ${DRONE_COMMIT_SHA}
-      GITHUB_CONTEXT: drone
-      GITHUB_STATE: success
-
   test:
     image: golang
     commands:
       - env
+
+  set-deployment-status-to-success:
+    image: cloudposse/github-status-updater
+    secrets:
+      - source: token
+        target: GITHUB_TOKEN
+    environment:
+      - GITHUB_ACTION=update_state
+      - GITHUB_OWNER=JieJhih
+      - GITHUB_REPO=cicd
+      - GITHUB_REF=${DRONE_COMMIT_SHA}
+      - GITHUB_CONTEXT=Staging Environment
+      - GITHUB_STATE=success
+      - GITHUB_DESCRIPTION=Deployed to namespace
+      - GITHUB_TARGET_URL=http://master.demo.cloudposse.org
