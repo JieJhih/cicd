@@ -7,6 +7,8 @@ clone:
     image: plugins/git
     depth: 1
     tags: false
+    when:
+      event: pull_request
 
 pipeline:
   test:
@@ -14,7 +16,7 @@ pipeline:
     commands:
       - go test
     when:
-      event: push
+      event: pull_request
 
   update-success:
     image: cloudposse/github-status-updater
@@ -32,7 +34,7 @@ pipeline:
       - GITHUB_TARGET_URL=${DRONE_BUILD_LINK}
     when:
       status: [ success ]
-      event: push
+      event: pull_request
 
   update-failed:
     image: cloudposse/github-status-updater
@@ -50,4 +52,4 @@ pipeline:
       - GITHUB_TARGET_URL=${DRONE_BUILD_LINK}
     when:
       status: [ failure ]
-      event: push
+      event: pull_request
