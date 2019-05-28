@@ -19,6 +19,7 @@ pipeline:
     image: golang
     commands:
       - go test
+      - echo 1
 
   commit-status-failed:
     image: jmccann/drone-github-status:rc
