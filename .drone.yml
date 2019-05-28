@@ -9,6 +9,18 @@ clone:
     tags: false
 
 pipeline:
+  commit-status-pend:
+    image: cloudposse/github-status-updater
+    environment:
+      GITHUB_ACTION: update_state
+      GITHUB_TOKEN:
+        from_secret: token
+      GITHUB_OWNER: JieJhih
+      GITHUB_REPO: cicd
+      GITHUB_REF: ${DRONE_COMMIT_SHA}
+      GITHUB_CONTEXT: drone
+      GITHUB_STATE: success
+
   test:
     image: golang
     commands:
