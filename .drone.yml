@@ -11,7 +11,7 @@ clone:
 pipeline:
   commit-status-pend:
     image: gboo/github-status
-    secrets: [ token ]
+    from_secret: token
     state: pending
     context: drone
 
@@ -22,7 +22,7 @@ pipeline:
 
   commit-status-failed:
     image: gboo/github-status
-    secrets: [ token ]
+    from_secret: token
     state: failure
     context: drone
     when:
@@ -30,7 +30,7 @@ pipeline:
 
   commit-status-succeed:
     image: gboo/github-status
-    secrets: [ token ]
+    from_secret: token
     state: success
     context: drone
     when:
