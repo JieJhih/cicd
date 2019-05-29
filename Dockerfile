@@ -1,11 +1,9 @@
-FROM python:2.7
+FROM golang:1.12-alpine
 
-WORKDIR /app
+RUN set -ex; \
+    apk update; \
+    apk add --no-cache git
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+WORKDIR /go/src/github.com/george-e-shaw-iv/integration-tests-example/
 
-ADD . .
-EXPOSE 5000
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+CMD CGO_ENABLED=0 go test ./...
