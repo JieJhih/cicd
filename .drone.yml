@@ -12,9 +12,11 @@ pipeline:
   test:
     image: golang
     commands:
-      - env
+      - go test
+    when:
+      event: push
 
-  set-deployment-status-to-success:
+  update-success:
     image: cloudposse/github-status-updater
     secrets:
       - source: token
@@ -24,7 +26,28 @@ pipeline:
       - GITHUB_OWNER=JieJhih
       - GITHUB_REPO=cicd
       - GITHUB_REF=${DRONE_COMMIT_SHA}
-      - GITHUB_CONTEXT=Staging Environment
+      - GITHUB_CONTEXT=drone
       - GITHUB_STATE=success
-      - GITHUB_DESCRIPTION=Deployed to namespace
-      - GITHUB_TARGET_URL=http://master.demo.cloudposse.org
+      - GITHUB_DESCRIPTION=${CI_JOB_STATUS}
+      - GITHUB_TARGET_URL=${DRONE_BUILD_LINK}
+    when:
+      status: [ success ]
+      event: push
+
+  update-failed:
+    image: cloudposse/github-status-updater
+    secrets:
+      - source: token
+        target: GITHUB_TOKEN
+    environment:
+      - GITHUB_ACTION=update_state
+      - GITHUB_OWNER=JieJhih
+      - GITHUB_REPO=cicd
+      - GITHUB_REF=${DRONE_COMMIT_SHA}
+      - GITHUB_CONTEXT=drone
+      - GITHUB_STATE=failure
+      - GITHUB_DESCRIPTION=${CI_JOB_STATUS}
+      - GITHUB_TARGET_URL=${DRONE_BUILD_LINK}
+    when:
+      status: [ failure ]
+      event: push
