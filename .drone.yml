@@ -2,6 +2,9 @@ workspace:
   base: /go
   path: src/graduate-project
 
+clone:
+  disable: true
+
 pipeline:
   clone:
   image: docker:git
