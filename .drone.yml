@@ -1,53 +1,32 @@
-workspace:
-  base: /go
-  path: src/graduate-project
+---
+kind: pipeline
+name: linux-amd64
 
-clone:
-  git:
-    image: plugins/git
-    depth: 1
-    tags: false
+platform:
+  os: linux
+  arch: amd64
 
-pipeline:
-  test:
-    image: golang
-    commands:
-      - go test
-    when:
-      event: push
+steps:
+- name: update-success
+  image: cloudposse/github-status-updater
+  secrets:
+    - source: token
+      target: GITHUB_TOKEN
+  environment:
+    - GITHUB_ACTION=update_state
+    - GITHUB_OWNER=JieJhih
+    - GITHUB_REPO=cicd
+    - GITHUB_REF=${DRONE_COMMIT_SHA}
+    - GITHUB_CONTEXT=Staging Environment
+    - GITHUB_STATE=success
+    - GITHUB_DESCRIPTION=${CI_JOB_STATUS}
+    - GITHUB_TARGET_URL=${DRONE_BUILD_LINK}
+  commands:
+  - go test -v ./...
 
-  update-success:
-    image: cloudposse/github-status-updater
-    secrets:
-      - source: token
-        target: GITHUB_TOKEN
-    environment:
-      - GITHUB_ACTION=update_state
-      - GITHUB_OWNER=JieJhih
-      - GITHUB_REPO=cicd
-      - GITHUB_REF=${DRONE_COMMIT_SHA}
-      - GITHUB_CONTEXT=Staging Environment
-      - GITHUB_STATE=success
-      - GITHUB_DESCRIPTION=${CI_JOB_STATUS}
-      - GITHUB_TARGET_URL=${DRONE_BUILD_LINK}
-    when:
-      status: [ success ]
-      event: push
+- name: test
+  image: golang:1.11
+  commands:
+  - go test -v ./...
 
-  update-failed:
-    image: cloudposse/github-status-updater
-    secrets:
-      - source: token
-        target: GITHUB_TOKEN
-    environment:
-      - GITHUB_ACTION=update_state
-      - GITHUB_OWNER=JieJhih
-      - GITHUB_REPO=cicd
-      - GITHUB_REF=${DRONE_COMMIT_SHA}
-      - GITHUB_CONTEXT=Staging Environment
-      - GITHUB_STATE=failure
-      - GITHUB_DESCRIPTION=${CI_JOB_STATUS}
-      - GITHUB_TARGET_URL=${DRONE_BUILD_LINK}
-    when:
-      status: [ failure ]
-      event: push
+...
