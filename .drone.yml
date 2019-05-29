@@ -23,7 +23,7 @@ pipeline:
     commands:
       - go test
     when:
-      event: pull_request
+      event: push
 
   update-success:
     image: cloudposse/github-status-updater
@@ -41,7 +41,7 @@ pipeline:
       - GITHUB_TARGET_URL=${DRONE_BUILD_LINK}
     when:
       status: [ success ]
-      event: pull_request
+      event: push
 
   update-failed:
     image: cloudposse/github-status-updater
@@ -59,4 +59,4 @@ pipeline:
       - GITHUB_TARGET_URL=${DRONE_BUILD_LINK}
     when:
       status: [ failure ]
-      event: pull_request
+      event: push
