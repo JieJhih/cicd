@@ -5,10 +5,9 @@ name: linux-amd64
 steps:
 - name: update-success
   image: cloudposse/github-status-updater
-  secrets:
-    - source: token
-      target: GITHUB_TOKEN
   environment:
+    GITHUB_TOKEN:
+      from_secret: token
     GITHUB_ACTION: update_state
     GITHUB_OWNER: JieJhih
     GITHUB_REPO: cicd
