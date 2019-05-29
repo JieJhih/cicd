@@ -27,3 +27,8 @@ steps:
   image: golang:1.11
   commands:
   - go test -v ./...
+
+depends_on:
+- linux-amd64
+
+...
