@@ -3,7 +3,10 @@ workspace:
   path: src/graduate-project
 
 clone:
-  disable: true
+  git:
+    image: plugins/git
+    depth: 1
+    tags: false
 
 pipeline:
   clone:
