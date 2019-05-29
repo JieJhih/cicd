@@ -1,8 +1,17 @@
 workspace:
   base: /go
   path: src/graduate-project
-  
+
 pipeline:
+  clone:
+  image: docker:git
+  commands:
+  - git clone https://github.com/JieJhih/cicd.git
+  - git fetch origin +refs/heads/master
+  - git checkout master
+  - git fetch origin refs/pull/${DRONE_PULL_REQUEST}/head
+  - git merge ${DRONE_COMMIT_SHA}
+
   test:
     image: golang
     commands:
