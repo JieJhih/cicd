@@ -21,12 +21,14 @@ steps:
     GITHUB_STATE: success
     GITHUB_DESCRIPTION: ${CI_JOB_STATUS}
     GITHUB_TARGET_URL: ${DRONE_BUILD_LINK}
-  commands:
-  - go test -v ./...
+  when:
+    event:
+    - push
+    - tag
+    status:
+    - success
 
 - name: test
   image: golang:1.11
   commands:
   - go test -v ./...
-
-...
